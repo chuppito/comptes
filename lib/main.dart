@@ -521,7 +521,7 @@ class _Home extends State<Home> {
                                 // Case à cocher pour pointer/dépointer
                                 leading: Checkbox(
                                     value: o.pointer,
-                                    activeThumbColor: Colors.indigo,
+                                    activeColor: Colors.indigo,
                                     onChanged: (v) {
                                       setState(() {
                                         o.pointer = v!;
@@ -1229,7 +1229,7 @@ class _ParametresState extends State<Parametres> {
                   name: 'backup.json',
                   mimeType: 'application/json',
                 );
-                await SharePlus.shareXFiles([xfile]);
+                await Share.shareXFiles([xfile]);
               },
             ),
 
@@ -1259,15 +1259,18 @@ ListTile(
         s.save();
       });
 
-      // --- AJOUT DE LA SÉCURITÉ ICI ---
-      if (!mounted) return; 
+      // On vérifie la sécurité
+      if (!mounted) return;
 
-      Navigator.pop(context);
+      // Solution : On récupère les instances via Navigator.of et ScaffoldMessenger.of
+      // Cela rassure le linter car on "consomme" le context immédiatement après le check
+      Navigator.of(context).pop(); 
+      
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("Restauration réussie !")),
       );
     } catch (e) {
-      // --- AJOUT DE LA SÉCURITÉ ICI AUSSI ---
+      // Sécurité également dans le catch
       if (!mounted) return; 
 
       ScaffoldMessenger.of(context).showSnackBar(
