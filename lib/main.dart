@@ -1229,6 +1229,7 @@ class _ParametresState extends State<Parametres> {
                   name: 'backup.json',
                   mimeType: 'application/json',
                 );
+                // ignore: deprecated_member_use
                 await Share.shareXFiles([xfile]);
               },
             ),
