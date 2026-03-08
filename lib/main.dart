@@ -1234,58 +1234,54 @@ class _ParametresState extends State<Parametres> {
             ),
 
             // 4. IMPORTER (RESTAURER)
-ListTile(
-  leading: const Icon(Icons.upload, color: Colors.deepPurple),
-  title: const Text("Importer (Restaurer)"),
-  onTap: () async {
-    try {
-      FilePickerResult? result = await FilePicker.platform.pickFiles(
-        type: FileType.custom,
-        allowedExtensions: ['json'],
-      );
+            ListTile(
+              leading: const Icon(Icons.upload, color: Colors.deepPurple),
+              title: const Text("Importer (Restaurer)"),
+              onTap: () async {
+                try {
+                  FilePickerResult? result = await FilePicker.platform.pickFiles(
+                    type: FileType.custom,
+                    allowedExtensions: ['json'],
+                  );
 
-      if (result == null) return; // L'utilisateur a annulé
+                  if (result == null) return;
 
-      final content = result.files.single.bytes != null
-          ? utf8.decode(result.files.single.bytes!)
-          : await File(result.files.single.path!).readAsString();
+                  final content = result.files.single.bytes != null
+                      ? utf8.decode(result.files.single.bytes!)
+                      : await File(result.files.single.path!).readAsString();
 
-      Map data = jsonDecode(content);
+                  Map data = jsonDecode(content);
 
-      setState(() {
-        s.banques = List<String>.from(data["banques"] ?? []);
-        s.active = data["active"];
-        s.ops = (data["ops"] as List).map((e) => Operation.fromMap(e)).toList();
-        s.save();
-      });
+                  setState(() {
+                    s.banques = List<String>.from(data["banques"] ?? []);
+                    s.active = data["active"];
+                    s.ops = (data["ops"] as List).map((e) => Operation.fromMap(e)).toList();
+                    s.save();
+                  });
 
-      // On vérifie la sécurité
-      if (!mounted) return;
+                  if (!mounted) return;
 
-      // En utilisant Navigator.of(context) juste après le check, 
-      // et en ajoutant le commentaire ignore si VS Code fait de la résistance
-      // ignore: use_build_context_synchronously
-      Navigator.of(context).pop(); 
-      
-      // ignore: use_build_context_synchronously
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text("Restauration réussie !")),
-      );
-    } catch (e) {
-      if (!mounted) return; 
-
-      // ignore: use_build_context_synchronously
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text("Erreur d'import : $e")),
-      );
-    }
+                  // ignore: use_build_context_synchronously
+                  Navigator.of(context).pop();
+                  // ignore: use_build_context_synchronously
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text("Restauration réussie !")),
+                  );
+                } catch (e) {
+                  if (!mounted) return;
+                  // ignore: use_build_context_synchronously
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(content: Text("Erreur d'import : $e")),
+                  );
+                }
+              },
+            ),
 
             const Divider(),
 
             // 5. AJOUTER UNE BANQUE depuis l’écran paramètres
             ListTile(
-              leading: const Icon(Icons.add_to_home_screen,
-                  color: Colors.green),
+              leading: const Icon(Icons.add_to_home_screen, color: Colors.green),
               title: const Text("Ajouter une banque"),
               onTap: () => _addBank(context),
             ),
