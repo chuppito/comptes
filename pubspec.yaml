@@ -1,0 +1,41 @@
+name: comptes
+description: Application de gestion de comptes.
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  hive: ^2.2.3
+  hive_flutter: ^1.1.0
+  table_calendar: ^3.1.2
+  uuid: ^4.4.0
+  intl: ^0.20.2
+  share_plus: ^12.0.1
+  file_picker: ^8.1.2
+  app_links: ^6.0.1
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^3.0.0
+  flutter_launcher_icons: ^0.13.1
+  change_app_package_name: ^1.5.0
+
+# Bloc pour l'icône (BIEN ALIGNÉ À GAUCHE)
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/icon.png"
+  adaptive_icon_background: "#1A237E"
+  adaptive_icon_foreground: "assets/icon.png"
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/icon.png
