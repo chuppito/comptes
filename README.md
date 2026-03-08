@@ -2,43 +2,47 @@
 
 ![Build Status](https://github.com/chuppito/comptes/actions/workflows/main.yml/badge.svg)
 
-Une application Flutter légère et intuitive pour la gestion de comptes bancaires multi-sources, conçue pour automatiser le suivi des dépenses via des notifications mobiles.
+Une application Flutter légère et personnalisable pour la gestion de comptes bancaires, conçue pour automatiser le suivi des dépenses via les notifications mobiles.
 
 ## 🚀 Objectif de l'application
-L'objectif est de centraliser vos finances en temps réel. Contrairement aux applications bancaires classiques, celle-ci permet de regrouper plusieurs banques (Revolut, Trade Republic, etc.) et d'enregistrer instantanément vos transactions grâce à une intégration poussée avec **MacroDroid**.
+L'objectif est de centraliser vos finances en temps réel. Cette application permet de regrouper plusieurs sources (Banques, Portefeuilles, Épargne) et d'enregistrer instantanément vos transactions grâce à une intégration avec **MacroDroid**.
+
+
 
 ## ✨ Fonctionnalités Clés
 
-* **Multi-Banques :** Créez et gérez autant de comptes bancaires que nécessaire.
-* **Automatisation MacroDroid :** Intégration via *Deep Links* pour capturer les notifications bancaires et enregistrer les dépenses/recettes sans ouvrir l'application.
-* **Pointage Intelligent :** Les transactions issues des notifications sont cochées automatiquement (pointées), tandis que les dépenses récurrentes restent à pointer.
-* **Gestion des Récurrences :** Planifiez vos loyers, abonnements et factures (mensuel, trimestriel, etc.) avec gestion des exclusions de dates.
-* **Calcul de Solde Prévisionnel :** Visualisez votre solde réel (pointé) vs votre solde théorique à venir.
-* **Import/Export JSON :** Sauvegardez vos données localement ou transférez-les facilement entre appareils.
-* **Mode Calendrier :** Une vue globale pour anticiper vos flux financiers.
+* **Multi-Banques Personnalisables :** L'application démarre vide ; c'est à vous de créer vos propres banques (Revolut, Trade Republic, Bourso, etc.) directement via l'interface.
+* **Automatisation MacroDroid :** Intégration via *Deep Links* pour capturer les notifications bancaires et enregistrer les dépenses/recettes sans aucune saisie manuelle.
+* **Pointage Intelligent :** * Les transactions reçues par MacroDroid sont **cochées (pointées) automatiquement**.
+    * Les saisies manuelles ponctuelles sont aussi pointées par défaut.
+    * Les dépenses récurrentes (loyers, abonnements) restent à pointer manuellement pour vérification.
+* **Gestion des Récurrences :** Planification complète (mensuel, trimestriel, etc.) avec gestion des jours d'exclusions.
+* **Calcul de Solde :** Visualisez votre solde réel (uniquement ce qui est pointé) ou votre solde théorique.
+* **Import/Export JSON :** Sauvegardez vos données ou restaurez-les facilement.
 
 ## 🛠️ Installation
 
-Le projet utilise GitHub Actions pour compiler automatiquement l'application.
+Comme l'application est en développement continu, vous pouvez récupérer la dernière version compilée directement sur GitHub :
 
-1.  Rendez-vous sur l'onglet **"Actions"** de ce dépôt GitHub.
-2.  Cliquez sur le dernier workflow réussi (marqué d'une coche verte ✅).
-3.  Descendez jusqu'à la section **"Artifacts"**.
-4.  Téléchargez le fichier `app-release.apk` et installez-le sur votre appareil Android.
+1.  Rendez-vous sur la page des actions : [https://github.com/chuppito/comptes/actions](https://github.com/chuppito/comptes/actions)
+2.  Cliquez sur le dernier workflow réussi (avec une coche verte ✅).
+3.  En bas de la page, dans la section **"Artifacts"**, téléchargez le fichier `app-release.apk`.
+4.  Installez l'APK sur votre smartphone Android.
 
-## 🤖 Configuration avec MacroDroid (Exemple)
+## 🤖 Configuration avec MacroDroid
 
-Pour envoyer une dépense automatiquement à l'application, configurez une action "Ouvrir un lien" dans MacroDroid avec ce format :
+Pour envoyer une dépense automatiquement vers votre application, utilisez l'action "Ouvrir un lien" dans MacroDroid :
 
 `macrodroid://revolut?m={montant}&d={marchand}&t=depense`
 
-* `m` : Le montant extrait de la notification.
-* `d` : Le nom du marchand.
-* `t` : Le type (depense ou credit).
+*(Remplacez `revolut` par le nom exact de la banque que vous avez créée dans l'application).*
+
+* `m` : Le montant (ex: 12.50).
+* `d` : Le nom du marchand (ex: Lidl).
+* `t` : Le type (`depense` pour l'onglet rouge, `credit` pour l'onglet vert).
 
 ## 🧰 Stack Technique
 
 * **Framework :** Flutter
-* **Base de données :** Hive (Stockage local rapide)
-* **Gestion d'état :** Singleton Store pattern
-* **Deep Linking :** AppLinks
+* **Base de données :** Hive (Stockage local NoSQL ultra-rapide)
+* **Deep Linking :** AppLinks pour la communication inter-app.
