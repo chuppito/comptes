@@ -1,12 +1,10 @@
-name: Flutter CI
+name: Flutter CI/CD
 
 on:
   push:
-    branches:
-      - main
+    branches: [ "main" ]
   pull_request:
-    branches:
-      - main
+    branches: [ "main" ]
 
 jobs:
   build:
@@ -15,7 +13,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install Flutter
+      - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
           channel: 'stable'
@@ -24,13 +22,15 @@ jobs:
         run: flutter pub get
 
       - name: Analyze code
-        run: flutter analyze --no-fatal-infos --no-fatal-warnings
+        run: flutter analyze --no-fatal-infos
 
+      # Cette étape crée le fichier installable
       - name: Build APK
-        run: flutter build apk --release
+        run: flutter build apk --release --no-tree-shake-icons
 
-      - name: Upload APK
+      # Cette étape rend l'APK téléchargeable sur GitHub
+      - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: release-apk
+          name: App-Comptes-Release
           path: build/app/outputs/flutter-apk/app-release.apk
