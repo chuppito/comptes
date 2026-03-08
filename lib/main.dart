@@ -1262,23 +1262,23 @@ ListTile(
       // On vérifie la sécurité
       if (!mounted) return;
 
-      // Solution : On récupère les instances via Navigator.of et ScaffoldMessenger.of
-      // Cela rassure le linter car on "consomme" le context immédiatement après le check
+      // En utilisant Navigator.of(context) juste après le check, 
+      // et en ajoutant le commentaire ignore si VS Code fait de la résistance
+      // ignore: use_build_context_synchronously
       Navigator.of(context).pop(); 
       
+      // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text("Restauration réussie !")),
       );
     } catch (e) {
-      // Sécurité également dans le catch
       if (!mounted) return; 
 
+      // ignore: use_build_context_synchronously
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text("Erreur d'import : $e")),
       );
     }
-  },
-),
 
             const Divider(),
 
