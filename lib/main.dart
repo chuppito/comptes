@@ -318,29 +318,45 @@ class _Home extends State<Home> {
 
       final m = double.tryParse(mStr ?? '0');               // Montant parsé
       final d = uri.queryParameters['desc'] ?? 'Achat Mobile'; // Description par défaut
-      final b = uri.queryParameters['banque'];              // Banque visée
+      final bName = uri.queryParameters['banque'];          // Nom de la banque visée
+
+      // Vérification si la banque existe dans ton Store (en ignorant la casse)
+      String? banqueTrouvee;
+      if (bName != null) {
+        try {
+          banqueTrouvee = s.banques.firstWhere(
+            (element) => element.toLowerCase() == bName.toLowerCase()
+          );
+        } catch (e) {
+          banqueTrouvee = null; // Banque non trouvée dans la liste
+        }
+      }
 
       // Conditions minimales pour créer l’opération
-      if (m != null && m > 0 && b != null && s.banques.contains(b)) {
+      if (m != null && m > 0 && banqueTrouvee != null) {
         setState(() {
+          // MISE À JOUR VISUELLE : Bascule l'affichage sur la banque reçue
+          s.active = banqueTrouvee;
+
           s.ops.add(Operation(
             id: const Uuid().v4(),                          // Nouveau UUID
             desc: d,
             montant: m,
             depense: isCredit ? false : true,               // crédit = revenu
             date: DateTime.now(),                           // Date du jour
-            banque: b,
+            banque: s.active!,                          // Utilise le nom exact du Store
             f: Frequence.ponctuel,                          // Ajout Macrodroid = ponctuel
             pointer: true,                                  // Directement pointé
           ));
           s.save();
         });
+
         if (mounted) {
           // Snackbar de confirmation
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(
-              content: Text("Ajouté : $d ($m €)"),
-              backgroundColor: isCredit ? Colors.blue : Colors.green,
+              content: Text("Ajouté sur ${s.active} : $d ($m €)"),
+              backgroundColor: isCredit ? Colors.green : Colors.redAccent, // Couleurs cohérentes débit/crédit
             ),
           );
         }
